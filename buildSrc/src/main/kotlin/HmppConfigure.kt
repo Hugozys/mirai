@@ -319,9 +319,9 @@ fun KotlinMultiplatformExtension.configureNativeTargetsHierarchical(
     NATIVE_TARGETS.forEach { targetName ->
         val target = targets.getByName(targetName) as KotlinNativeTarget
         if (!IDEA_ACTIVE && HOST_KIND == HostKind.WINDOWS) {
-            target.findOrCreateTest(NativeBuildType.RELEASE) {
-                // add release test to run on CI
-                project.afterEvaluate {
+            // add release test to run on CI
+            project.afterEvaluate {
+                target.findOrCreateTest(NativeBuildType.RELEASE) {
                     // use linkReleaseTestMingwX64 for mingwX64Test to save memory
                     tasks.getByName("mingwX64Test", KotlinNativeTest::class)
                         .executable(linkTask) { linkTask.binary.outputFile }
