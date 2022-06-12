@@ -465,6 +465,10 @@ jobs:
         run: ./gradlew mirai-core:linkReleaseTestMingwX64 ${{ env.gradleArgs }}
 
       - if: ${{ env.isWindows == 'true' }}
+        name: tasklist
+        run: tasklist
+
+      - if: ${{ env.isWindows == 'true' }}
         name: "Test mirai-core for mingwX64"
         run: ./gradlew :mirai-core:mingwX64Test ${{ env.gradleArgs }}
 
