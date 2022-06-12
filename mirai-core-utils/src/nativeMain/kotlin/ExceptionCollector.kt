@@ -10,16 +10,13 @@
 package net.mamoe.mirai.utils
 
 internal actual fun hash(e: Throwable): Long {
-    // Stacktrace analysis not available
     var hashCode = 1L
     val trace = e.getStackTraceAddresses()
-    if (trace.size <= 1) {
-        val kClass = e::class
-        hashCode = (kClass.qualifiedName ?: kClass.simpleName ?: kClass).hashCode().toLongUnsigned()
-    } else {
-        for (stackTraceAddress in trace) {
-            hashCode = (hashCode xor stackTraceAddress).shl(1)
-        }
+    for (stackTraceAddress in trace) {
+        hashCode = (hashCode xor stackTraceAddress).shl(1)
     }
-    return hashCode
+
+    // Somehow stacktrace analysis is on my own Windows machine but not on GitHub Actions.
+    // Hashing with a class to tentatively not filter out different types.
+    return hashCode xor e::class.hashCode().toLongUnsigned()
 }
